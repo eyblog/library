@@ -76,9 +76,11 @@
 	    }
 		//请求
 		public function query($method,$data=""){
-			$data='<request><head/><body><hotelId>1020</hotelId></body></request>';		
 			header("Content-type: text/html; charset=utf-8");
-			$str=$this->getQueryString($method,$data);
+			$request['head']="";
+			$request['body']=$data;
+			$str=$this->getQueryString($method,$this->arrtoxml($request));
+
 			$rs=$this->curl_post($this->url,$str);
 			$rs=$this->xmltoarr($rs);
 			return $rs['body'];
@@ -104,30 +106,29 @@
 			return 	$configData;
 		}
 		//数组转xml
-    public function arrtoxml($data, $rootNodeName = 'data', $xml=null){
-        if (ini_get('zend.ze1_compatibility_mode') == 1){
-            ini_set ('zend.ze1_compatibility_mode', 0);
-        }
-         
-        if ($xml == null){
-            $xml = simplexml_load_string("<?xml version='1.0' encoding='utf-8'?><$rootNodeName />");
-        }
-        foreach($data as $key => $value){
-            if (is_numeric($key)){
-                $key = "unknownNode_". (string) $key;
-            }
-            $key = preg_replace('/[^a-z]/i', '', $key);
-            if (is_array($value)){
-                $node = $xml->addChild($key);
-                $this->arrtoxml($value, $rootNodeName, $node);
-            }
-            else{
-               	$value = htmlentities($value);
-               	$xml->addChild($key,$value);
-            }
-        }
-        return $xml->asXML();
-    }		
+	    public function arrtoxml($data, $rootNodeName = 'request', $xml=null){
+	        if (ini_get('zend.ze1_compatibility_mode') == 1){
+	            ini_set ('zend.ze1_compatibility_mode', 0);
+	        }
+	        if ($xml == null){
+	            $xml = simplexml_load_string("<$rootNodeName />");
+	        }
+	        foreach($data as $key => $value){
+	            if (is_numeric($key)){
+	                $key = "unknownNode_". (string) $key;
+	            }
+	            $key = preg_replace('/[^a-z]/i', '', $key);
+	            if (is_array($value)){
+	                $node = $xml->addChild($key);
+	                $this->arrtoxml($value, $rootNodeName, $node);
+	            }
+	            else{
+	               	$value = htmlentities($value);
+	               	$xml->addChild($key,$value);
+	            }
+	        }
+	        return $xml->asXML();
+	    }		
 		//curl
 		public function curl_post($url,$data,$referer=''){
 			$post_str = '';
@@ -158,5 +159,7 @@
 		}
 	}
 	$zhuzher=new zhuzher();
-	$zhuzher->query("zhuzher.data.getAllRoomInfo");
+	$data['hotelId']=1020;
+	$data['memberCardNo']="";
+	$rs=$zhuzher->query("zhuzher.member.getMemberInfo",$data);
 ?>
