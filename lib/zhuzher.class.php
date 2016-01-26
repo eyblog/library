@@ -61,7 +61,7 @@
 	class zhuzher{
 		//配置
 		private $url="http://open.zhuzher.com/api/request.action";//请求地址
-		private $cId="S9000001";    //有住哲分配给客户的调用ID
+		private $cId="S9800001";    //有住哲分配给客户的调用ID
 		private $key="123456";    //密钥，由住哲公司分配的密钥
 		private $dataKey="12345678";//数据加密密钥，由住哲公司分配的密钥
 		private $time=0;			//时间戳
@@ -79,9 +79,10 @@
 			header("Content-type: text/html; charset=utf-8");
 			$request['head']="";
 			$request['body']=$data;
+			//print_r($this->arrtoxml($request));
 			$str=$this->getQueryString($method,$this->arrtoxml($request));
-
 			$rs=$this->curl_post($this->url,$str);
+			print_r($rs);
 			$rs=$this->xmltoarr($rs);
 			return $rs['body'];
 		}	    		
@@ -142,7 +143,7 @@
 			}
 			$curl = curl_init ();
 			curl_setopt ( $curl, CURLOPT_URL, $url ); //要访问的地址 即要登录的地址页面	
-			curl_setopt ( $curl, CURLOPT_SSL_VERIFYHOST, 1 ); // 从证书中检查SSL加密算法是否存在
+			//curl_setopt ( $curl, CURLOPT_SSL_VERIFYHOST, 1 ); // 从证书中检查SSL加密算法是否存在
 			curl_setopt ( $curl, CURLOPT_SSL_VERIFYPEER, false ); // 对认证证书来源的检查
 			//curl_setopt ( $curl, CURLOPT_HTTPHEADER, $header_arr );
 			curl_setopt ( $curl, CURLOPT_POST, 1 ); // 发送一个常规的Post请求
@@ -159,7 +160,7 @@
 		}
 	}
 	$zhuzher=new zhuzher();
-	$data['hotelId']=1020;
-	$data['memberCardNo']="";
+			$data['hotelId']=1010;
+			$data['memberCardNo']="00000252";
 	$rs=$zhuzher->query("zhuzher.member.getMemberInfo",$data);
 ?>
