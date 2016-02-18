@@ -123,52 +123,48 @@ header("Content-type: text/html; charset=utf-8");
 	    }
 	}
 
-class DESede{
-/**
-* 加密
-* @param $data 待加密明文
-* @param $key DES私钥
-* @param $use3des 是否启用3DES加密，默认启用
-*/
-function encrypt($data='', $key='', $use3des = true)
-{
-if (empty($data) || empty($key))
-{
-return False;
-}
-$cipher = $use3des ? MCRYPT_TRIPLEDES : MCRYPT_DES;
-$modes = MCRYPT_MODE_ECB;
-# Add PKCS7 padding.
-$block = mcrypt_get_block_size($cipher, $modes);
-$pad = $block - (strlen($data) % $block);
-$data .= str_repeat(chr($pad), $pad);
-$iv = mcrypt_create_iv(mcrypt_get_iv_size($cipher, $modes), MCRYPT_RAND);
-$encrypted = @mcrypt_encrypt($cipher, $key, $data, $modes, $iv);
-return base64_encode($encrypted);//base64_encode
-//return $encrypted;
-}
-/**
-* 解密
-* @param $data 待解密密文
-* @param $key DES私钥
-* @param $use3des 是否启用3DES加密，默认启用
-*/
-function decrypt($data='', $key='', $use3des = true)
-{
-if (empty($data) || empty($key))
-{
-return False;
-}
-$data=base64_decode($data);
-$cipher = $use3des ? MCRYPT_TRIPLEDES : MCRYPT_DES;
-$modes = MCRYPT_MODE_ECB;
-$iv = mcrypt_create_iv(mcrypt_get_iv_size($cipher, $modes), MCRYPT_RAND);
-$data = @mcrypt_decrypt($cipher, $key, $data, $modes, $iv);
-# Strip padding out.
-$block = mcrypt_get_block_size($cipher, $modes);
-$pad = ord($data[($len = strlen($data)) - 1]);
-$decrypted = substr($data, 0, strlen($data) - $pad);
-return $decrypted;
-}
-}	
+	class DESede{
+		/**
+		* 加密
+		* @param $data 待加密明文
+		* @param $key DES私钥
+		* @param $use3des 是否启用3DES加密，默认启用
+		*/
+		function encrypt($data='', $key='', $use3des = true){
+			if (empty($data) || empty($key)){
+				return False;
+			}
+			$cipher = $use3des ? MCRYPT_TRIPLEDES : MCRYPT_DES;
+			$modes = MCRYPT_MODE_ECB;
+			# Add PKCS7 padding.
+			$block = mcrypt_get_block_size($cipher, $modes);
+			$pad = $block - (strlen($data) % $block);
+			$data .= str_repeat(chr($pad), $pad);
+			$iv = mcrypt_create_iv(mcrypt_get_iv_size($cipher, $modes), MCRYPT_RAND);
+			$encrypted = @mcrypt_encrypt($cipher, $key, $data, $modes, $iv);
+			return base64_encode($encrypted);//base64_encode
+			//return $encrypted;
+		}
+		/**
+		* 解密
+		* @param $data 待解密密文
+		* @param $key DES私钥
+		* @param $use3des 是否启用3DES加密，默认启用
+		*/
+		function decrypt($data='', $key='', $use3des = true){
+			if (empty($data) || empty($key)){
+				return False;
+			}
+			$data=base64_decode($data);
+			$cipher = $use3des ? MCRYPT_TRIPLEDES : MCRYPT_DES;
+			$modes = MCRYPT_MODE_ECB;
+			$iv = mcrypt_create_iv(mcrypt_get_iv_size($cipher, $modes), MCRYPT_RAND);
+			$data = @mcrypt_decrypt($cipher, $key, $data, $modes, $iv);
+			# Strip padding out.
+			$block = mcrypt_get_block_size($cipher, $modes);
+			$pad = ord($data[($len = strlen($data)) - 1]);
+			$decrypted = substr($data, 0, strlen($data) - $pad);
+			return $decrypted;
+		}
+	}	
 ?>
