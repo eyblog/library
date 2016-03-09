@@ -1,4 +1,5 @@
 ##类库 
-*  verif.class：验证码
-*  zhuzher.class：住哲接口 
-*  cits.class: 国旅接口
+*  verif：验证码
+*  zhuzher：住哲接口 
+*  cits: 国旅接口
+*  page:分页

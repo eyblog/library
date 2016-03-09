@@ -76,13 +76,17 @@ header("Content-type: text/html; charset=utf-8");
 			$body = json_decode($rs['responseBody'], true);
 			if($t == 1){
 				//首页调用
-				//import("ORG.Util.Page"); // 导入分页类
-				//$Page = new Page($body['PageVo']['totalCount'], 5); // 实例化分页类 传入总记录数和每页显示的记录数
-				//$llist['show'] = $Page->show(); // 分页显示输出
-				$data = $body['ResultInfoLs'];
+				if(!$body['ResultInfoLs']){
+					$data=$body;
+				}else{
+					$data = $body['ResultInfoLs'];
+				}
 			}elseif($t == 2){
 				//abroad调用
-				$data = $body;
+				require 'page.class.php'; // 导入分页类
+				$Page = new Page($body['PageVo']['totalCount'], $body['PageVo']['messageForPage']); // 实例化分页类 传入总记录数和每页显示的记录数
+				$llist['show'] = $Page->show(); // 分页显示输出				
+				$data = $body['ResultInfoLs'];
 			}
 			$llist['content'] = $data;
 			return $llist;
