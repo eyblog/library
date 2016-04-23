@@ -1,15 +1,4 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2009 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
-// $Id: Page.class.php 2712 2012-02-06 10:12:49Z liu21st $
-
 class Page {
     // 分页栏每页显示的页数
     public $rollPage = 5;
@@ -32,17 +21,6 @@ class Page {
     // 默认分页变量名
     protected $varPage;
 
-    /**
-     +----------------------------------------------------------
-     * 架构函数
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     * @param array $totalRows  总的记录数
-     * @param array $listRows  每页显示记录数
-     * @param array $parameter  分页跳转的参数
-     +----------------------------------------------------------
-     */
     public function __construct($totalRows,$listRows='',$parameter='') {
         $this->totalRows = $totalRows;
         $this->parameter = $parameter;
@@ -67,15 +45,7 @@ class Page {
         $data['nowPage']=$this->nowPage;
         $data['totalPages']=$this->totalPages;
         return $data;
-    }       
-
-    /**
-     +----------------------------------------------------------
-     * 分页显示输出
-     +----------------------------------------------------------
-     * @access public
-     +----------------------------------------------------------
-     */
+    } 
     public function show() {
         if(0 == $this->totalRows) return '';
         $p = $this->varPage;
